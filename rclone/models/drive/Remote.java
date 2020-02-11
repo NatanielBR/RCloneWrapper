@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rclone.models.drive;
 
 import java.io.File;
@@ -78,15 +73,6 @@ public class Remote {
      */
     public List<FileRemote> listFiles(FileRemote directory) throws Exception {
         String folder;
-//        if (directory != null) {
-//            if (!directory.isDirectory()) {
-//                throw new Exception("So e possivel listar arquivos em um diretorio");
-//            }
-//            folder = String.format("%s%s",File.separator, directory.getName()
-//                    .substring(0, directory.getName().length() - 1));
-//        } else {
-//            folder = "";
-//        }
         if (directory != null) {
             if (!directory.isDirectory()) {
                 throw new Exception("So e possivel listar arquivos em um diretorio");
@@ -100,12 +86,9 @@ public class Remote {
         var list = new ArrayList<FileRemote>();
         try {
             var lines = rclone.readProcess(false, "lsf",
-//            		String.format("%s%s", getRemoteName(), folder), "-F", "pst", "-s", ";;;");
             		String.format("%s%s", getRemoteName(), folder), "-F", "pst", "-s", ";;;");
             	lines.stream().map(a -> a.split(";;;")).map(a -> {
                 boolean isDirectory = a[0].endsWith("/");
-                //a[0] = nome
-                //a[2] = lastModification
                 return new FileRemote(isDirectory, a[0],
                 		String.format("%s%s%s",folder,File.separator,a[0]), a[2],
                 		Long.parseLong(a[1]));
