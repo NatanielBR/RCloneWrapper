@@ -31,25 +31,14 @@ public class RCloneWrapper {
      * @return Um processo
      * @throws IOException
      */
-    private Process getRcloneRuntime(String... args) throws IOException {
-        return Runtime.getRuntime().exec(arrayFirtAppend(
-        		args, new File(rclonePath).getAbsolutePath()));
+    private Process getRcloneRuntime(String rpath, String... args) throws IOException {
+        String[] rargs;
+        rargs = WrapperTools.arrayFirtAppend(args, new File(rpath).getAbsolutePath());
+        
+        return Runtime.getRuntime().exec(rargs);
     }
-
-    /**
-     * Metodo que generico que adiciona um valor no inicio de um Array.
-     *
-     * @param <T> Uma classe generica
-     * @param arr Um array generico.
-     * @param value Um valor generico.
-     * @return Um novo array sendo adicionado o valor generico no seu inico.
-     */
-    private <T> T[] arrayFirtAppend(T[] arr, T value) {
-        @SuppressWarnings("unchecked")
-		T[] arr2 = (T[]) Array.newInstance(value.getClass(), arr.length + 1);
-        System.arraycopy(arr, 0, arr2, 1, arr2.length - 1);
-        arr2[0] = value;
-        return arr2;
+    public Process getRcloneRuntime(String... args) throws IOException{
+        return getRcloneRuntime(rclonePath, args);
     }
 
     /**
