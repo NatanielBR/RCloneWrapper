@@ -6,6 +6,7 @@ package rclone.models;
  * remoto posui uma propria lista de exigencias.
  * @author neoold
  */
+@SuppressWarnings("serial")
 public class ObrigatorioException extends Exception{
 
     public ObrigatorioException() {

@@ -39,9 +39,7 @@ public class RemoteType {
      */
     public void create(Consumer<String> onUpdate) throws ObrigatorioException {
         var args = mapParaArray(parametros);
-        //A ordem fica invertida, para agilizar somente inverti os valores
-        //para ter a ordem correta.
-        args = WrapperTools.arrayFirtAppend(args, "create", "config");
+        args = WrapperTools.arrayFirtAppend(args, new String[] {"config", "create"});
         try {
             var proc = wrapper.getRcloneRuntime(args);
             readInput(proc);
@@ -90,7 +88,6 @@ public class RemoteType {
      * @return Um array de String compativel com o Process.
      */
     private String[] mapParaArray(HashMap<ConfigParametros, String> parametros) {
-        var chaves = parametros.keySet();
         List<String> kv = new ArrayList<>();
         kv.add(parametros.remove(ConfigParametros.NOME));
         kv.add(parametros.remove(ConfigParametros.TIPO));
@@ -116,6 +113,12 @@ public class RemoteType {
     private void readInput(Process proc) {
         var tf = new Thread(() -> {
             try (Scanner ent = new Scanner(proc.getInputStream())) {
+                while (ent.hasNextLine()) {
+                    lines.add(ent.nextLine());
+                }
+            } catch (Exception e) {
+            }
+            try (Scanner ent = new Scanner(proc.getErrorStream())) {
                 while (ent.hasNextLine()) {
                     lines.add(ent.nextLine());
                 }

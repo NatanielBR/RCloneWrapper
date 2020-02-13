@@ -5,7 +5,9 @@
  */
 package rclone.wrapper;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -21,17 +23,22 @@ public class WrapperTools {
      * @return Um novo array sendo adicionado o valor generico no seu inico.
      */
     public static <T> T[] arrayFirtAppend(T[] arr, T value) {
-        @SuppressWarnings("unchecked")
-		T[] arr2 = (T[]) Array.newInstance(value.getClass(), arr.length + 1);
-        System.arraycopy(arr, 0, arr2, 1, arr2.length - 1);
-        arr2[0] = value;
-        return arr2;
+        List<T> list2 = new ArrayList<T>();
+        list2.add(value);
+        list2.addAll(Arrays.asList(arr));
+        return list2.toArray(arr);
+//      @SuppressWarnings("unchecked")
+//		T[] arr2 = (T[]) Array.newInstance(value.getClass(), arr.length + 1);
+//        System.arraycopy(arr, 0, arr2, 1, arr2.length - 1);
+//        arr2[0] = value;
+//        return arr2;
     }
-    public static<T> T[] arrayFirtAppend(T[] arr, T... values){
-        T[] nArr = null;
+    public static<T> T[] arrayFirtAppend(T[] arr, T[] values){
+    	List<T> list2 = new ArrayList<T>();
         for (T value : values){
-            nArr = arrayFirtAppend(nArr == null ? arr : nArr, value);
-        }
-        return nArr;
+            list2.add(value);
+        }	
+        list2.addAll(Arrays.asList(arr));
+        return list2.toArray(arr);
     }
 }
