@@ -12,7 +12,7 @@ import rclone.wrapper.RCloneWrapper;
 import rclone.wrapper.WrapperTools;
 
 /**
- *
+ * Classe pai que representa um remoto abstrato.
  * @author neoold
  */
 public class RemoteType {
@@ -28,11 +28,20 @@ public class RemoteType {
         this.obrigatorios = obrigatorios;
         this.parametros = parametros;
     }
-
+    /**
+     * Metodo que irá criar uma instancia do RClone com o alguns parametros ja
+     * definidos, até o momento o seu equivalente é: "rclone config create".
+     * @param onUpdate
+     * Uma ação que será executada sempre que houver atualização
+     * no texto que o rclone mandar.
+     * @throws ObrigatorioException
+     * Caso a lista de obrigatorios não foi atentida.
+     */
     public void create(Consumer<String> onUpdate) throws ObrigatorioException {
         var args = mapParaArray(parametros);
+        //A ordem fica invertida, para agilizar somente inverti os valores
+        //para ter a ordem correta.
         args = WrapperTools.arrayFirtAppend(args, "create", "config");
-        System.out.println(String.join(" ", args));
         try {
             var proc = wrapper.getRcloneRuntime(args);
             readInput(proc);
@@ -52,7 +61,11 @@ public class RemoteType {
         }
 
     }
-
+    /**
+     * Metodo para verificar se os valores obrigatorios foi informado.
+     * @return true se, e somente se, todos foram informados e false
+     * caso contrario.
+     */
     public boolean verificarObrigatorio() {
         var keys = parametros.keySet();
         // verifica se a lista de chaves é menor que o obrigatorio
@@ -69,31 +82,37 @@ public class RemoteType {
         }
         return true;
     }
-
+    /**
+     * Metodo para transformar um HashMap um Array compativel com o
+     * Process.
+     * @param parametros Uma dicionario de parametros e valores.
+     * @see Process
+     * @return Um array de String compativel com o Process.
+     */
     private String[] mapParaArray(HashMap<ConfigParametros, String> parametros) {
         var chaves = parametros.keySet();
         List<String> kv = new ArrayList<>();
         kv.add(parametros.remove(ConfigParametros.NOME));
         kv.add(parametros.remove(ConfigParametros.TIPO));
         parametros.forEach((a, b) -> {
-//            b = b.contains(" ")? String.format("\"%s\"", b):b;
             kv.add(a.texto);
             kv.add(b);
         });
-//        chaves.stream().map(a->parametros.get(a))
-//                .map(a-> a.contains(" ")? String.format("\"%s\"", a):a)
-//                .forEach(kv::add);
         return kv.toArray(new String[0]);
     }
-
-    private boolean isPar(int valor) {
-        return valor % 2 == 0;
-    }
-
+    /**
+     * Obter a lista de chaves obrigatorias.
+     * @return 
+     */
     public ConfigParametros[] getObrigatorios() {
         return obrigatorios;
     }
-
+    /**
+     * Metodo que cria uma thread para ler o texto do processo.
+     * Para evitar block de IO, se cria um Thread para esse
+     * proposito.
+     * @param proc Um processo para se poder ler seu texto.
+     */
     private void readInput(Process proc) {
         var tf = new Thread(() -> {
             try (Scanner ent = new Scanner(proc.getInputStream())) {

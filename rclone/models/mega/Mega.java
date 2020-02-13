@@ -6,7 +6,7 @@ import rclone.models.RemoteType;
 import rclone.wrapper.RCloneWrapper;
 
 /**
- *
+ * Remoto para o mega.
  * @author neoold
  */
 public class Mega extends RemoteType{

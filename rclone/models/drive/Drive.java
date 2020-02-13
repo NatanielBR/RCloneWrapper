@@ -6,7 +6,8 @@ import rclone.models.RemoteType;
 import rclone.wrapper.RCloneWrapper;
 
 /**
- *
+ * Classe que Representa o Drive. Em um futuro, essa classe terá um peso maior.
+ * Ou não.
  * @author neoold
  */
 public class Drive extends RemoteType {
