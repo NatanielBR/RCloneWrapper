@@ -2,13 +2,13 @@ package rclone.wrapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
-import rclone.models.drive.Remote;
+
+import rclone.models.remotes.Remote;
 
 /**
  * Classe que encapsula o Rclone. Alguns metodos do Rclone, pode ser acessado
@@ -115,7 +115,7 @@ public class RCloneWrapper {
             for (int i = 0; i < list.size(); i++) {
                 String[] s = list.get(i).split(" ");
                 if (s[1].equals("drive")) {
-                    remotes.add(new rclone.models.drive.Remote(this, s[0]));
+                    remotes.add(new rclone.models.remotes.Remote(this, s[0]));
                 }
             }
         } catch (Exception err) {

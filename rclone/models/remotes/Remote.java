@@ -1,4 +1,4 @@
-package rclone.models.drive;
+package rclone.models.remotes;
 
 import java.io.File;
 import java.io.IOException;
