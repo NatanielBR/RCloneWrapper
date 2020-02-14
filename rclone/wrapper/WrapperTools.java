@@ -14,6 +14,7 @@ import java.util.List;
  * @author neoold
  */
 public class WrapperTools {
+
     /**
      * Metodo que generico que adiciona um valor no inicio de um Array.
      *
@@ -33,11 +34,12 @@ public class WrapperTools {
 //        arr2[0] = value;
 //        return arr2;
     }
-    public static<T> T[] arrayFirtAppend(T[] arr, T[] values){
-    	List<T> list2 = new ArrayList<T>();
-        for (T value : values){
+
+    public static <T> T[] arrayFirtAppend(T[] arr, T[] values) {
+        List<T> list2 = new ArrayList<T>();
+        for (T value : values) {
             list2.add(value);
-        }	
+        }
         list2.addAll(Arrays.asList(arr));
         return list2.toArray(arr);
     }

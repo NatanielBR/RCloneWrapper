@@ -7,6 +7,7 @@ import rclone.wrapper.RCloneWrapper;
 
 /**
  * Builder do Mega.
+ *
  * @author neoold
  */
 public class MegaBuilder {
@@ -19,9 +20,10 @@ public class MegaBuilder {
         type("mega");
         this.wrapper = wrapper;
     }
+
     /**
-     * Metodo para construir o Mega, tambem irá verificar as exigencias antes
-     * de "entregar" a classe.
+     * Metodo para construir o Mega, tambem irá verificar as exigencias antes de
+     * "entregar" a classe.
      *
      * @return Um remoto pronto para ser criado.
      * @throws ObrigatorioException Caso algum valor obrigatorio não seja
@@ -34,10 +36,12 @@ public class MegaBuilder {
         }
         return mega;
     }
+
     /**
      * Nome do remoto, Obrigatorio.
+     *
      * @param name
-     * @return 
+     * @return
      */
     public MegaBuilder name(String name) {
         if (name == null) {
@@ -46,17 +50,21 @@ public class MegaBuilder {
         parametros.put(ConfigParametros.NOME, name);
         return this;
     }
+
     /**
      * Tipo do remoto, bye.
-     * @param type 
+     *
+     * @param type
      */
     private void type(String type) {
         parametros.put(ConfigParametros.TIPO, type);
     }
+
     /**
      * Email do Mega, Obrigatorio.
+     *
      * @param user
-     * @return 
+     * @return
      */
     public MegaBuilder user(String user) {
         if (user == null) {
@@ -65,10 +73,12 @@ public class MegaBuilder {
         parametros.put(ConfigParametros.USER, user);
         return this;
     }
+
     /**
      * Senha do mega, Obrigatorio.
+     *
      * @param password
-     * @return 
+     * @return
      */
     public MegaBuilder pass(String password) {
         if (password == null) {

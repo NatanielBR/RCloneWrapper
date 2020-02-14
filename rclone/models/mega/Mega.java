@@ -7,14 +7,14 @@ import rclone.wrapper.RCloneWrapper;
 
 /**
  * Remoto para o mega.
+ *
  * @author neoold
  */
-public class Mega extends RemoteType{
-    
+public class Mega extends RemoteType {
+
     public Mega(RCloneWrapper wrapper, HashMap<ConfigParametros, String> parametros) {
-        super(wrapper, new ConfigParametros[]
-        {ConfigParametros.NOME, ConfigParametros.TIPO,ConfigParametros.USER,ConfigParametros.PASSWORD},
+        super(wrapper, new ConfigParametros[]{ConfigParametros.NOME, ConfigParametros.TIPO, ConfigParametros.USER, ConfigParametros.PASSWORD},
                 parametros);
     }
-    
+
 }

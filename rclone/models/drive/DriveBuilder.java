@@ -103,10 +103,12 @@ public class DriveBuilder {
         parametros.put(ConfigParametros.DRIVE_SCOPE, scope.texto);
         return this;
     }
+
     /**
      * O root folder do drive, Opcional.
+     *
      * @param root
-     * @return 
+     * @return
      */
     public DriveBuilder rootFolder(String root) {
         if (root == null) {
@@ -115,6 +117,7 @@ public class DriveBuilder {
         parametros.put(ConfigParametros.DRIVE_ROOT_FOLDER, root);
         return this;
     }
+
     /**
      * Tipos de escopo, documentação do RClone.
      */
@@ -134,8 +137,8 @@ public class DriveBuilder {
          */
         DRIVE_FILE("drive.file"),
         /**
-         * Allows read and write access to the Application Data folder. This
-         * is not visible in the drive website.
+         * Allows read and write access to the Application Data folder. This is
+         * not visible in the drive website.
          */
         DRIVE_APPFOLDER("drive.appfolder"),
         /**
