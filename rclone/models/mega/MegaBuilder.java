@@ -1,6 +1,7 @@
 package rclone.models.mega;
 
 import java.util.HashMap;
+import rclone.models.Builder;
 import rclone.models.ConfigParametros;
 import rclone.models.ObrigatorioException;
 import rclone.wrapper.RCloneWrapper;
@@ -10,26 +11,28 @@ import rclone.wrapper.RCloneWrapper;
  *
  * @author neoold
  */
-public class MegaBuilder {
+public class MegaBuilder extends Builder{
 
     private HashMap<ConfigParametros, String> parametros;
     private RCloneWrapper wrapper;
 
     public MegaBuilder(RCloneWrapper wrapper) {
+        super();
         parametros = new HashMap<>();
-        type("mega");
         this.wrapper = wrapper;
     }
-
-    /**
-     * Metodo para construir o Mega, tambem irá verificar as exigencias antes de
-     * "entregar" a classe.
-     *
-     * @return Um remoto pronto para ser criado.
-     * @throws ObrigatorioException Caso algum valor obrigatorio não seja
-     * informado.
-     */
+    
+    @Override
+    public ConfigParametros[] parametrosBuild(){
+        return new ConfigParametros[]{
+            ConfigParametros.USER,
+            ConfigParametros.PASSWORD
+        };
+    }
+    
+    @Override
     public Mega build() throws ObrigatorioException {
+        type();
         var mega = new Mega(wrapper, parametros);
         if (!mega.verificarObrigatorio()) {
             throw new ObrigatorioException();
@@ -37,12 +40,8 @@ public class MegaBuilder {
         return mega;
     }
 
-    /**
-     * Nome do remoto, Obrigatorio.
-     *
-     * @param name
-     * @return
-     */
+    
+    @Override
     public MegaBuilder name(String name) {
         if (name == null) {
             throw new NullPointerException();
@@ -51,13 +50,10 @@ public class MegaBuilder {
         return this;
     }
 
-    /**
-     * Tipo do remoto, bye.
-     *
-     * @param type
-     */
-    private void type(String type) {
-        parametros.put(ConfigParametros.TIPO, type);
+    
+    public MegaBuilder type() {
+        parametros.put(ConfigParametros.TIPO, "mega");
+        return this;
     }
 
     /**

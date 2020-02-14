@@ -1,6 +1,7 @@
 package rclone.models.drive;
 
 import java.util.HashMap;
+import rclone.models.Builder;
 import rclone.models.ConfigParametros;
 import rclone.models.ObrigatorioException;
 import rclone.wrapper.RCloneWrapper;
@@ -10,27 +11,30 @@ import rclone.wrapper.RCloneWrapper;
  *
  * @author neoold
  */
-public class DriveBuilder {
+public class DriveBuilder extends Builder{
 
     private HashMap<ConfigParametros, String> parametros;
     private RCloneWrapper wrapper;
 
     public DriveBuilder(RCloneWrapper wrapper) {
         parametros = new HashMap<>();
-        type("drive");
+        type();
         this.wrapper = wrapper;
     }
-
-    /**
-     * Metodo para construir o Drive, tambem irá verificar as exigencias antes
-     * de "entregar" a classe.
-     *
-     * @return Um remoto pronto para ser criado.
-     * @throws ObrigatorioException Caso algum valor obrigatorio não seja
-     * informado.
-     */
+    
+    @Override
+    public ConfigParametros[] parametrosBuild(){
+        return new ConfigParametros[]{
+            ConfigParametros.DRIVE_CLIENT_ID,
+            ConfigParametros.DRIVE_CLIENT_SECRET,
+            ConfigParametros.DRIVE_ROOT_FOLDER,
+            ConfigParametros.DRIVE_SCOPE
+        };
+    }
+    
+    @Override
     public Drive build() throws ObrigatorioException {
-
+        type();
         var drive = new Drive(wrapper, parametros);
         if (!drive.verificarObrigatorio()) {
             throw new ObrigatorioException();
@@ -38,12 +42,7 @@ public class DriveBuilder {
         return drive;
     }
 
-    /**
-     * Nome do remoto. Obrigatorio.
-     *
-     * @param name o nome
-     * @return o builder.
-     */
+    @Override
     public DriveBuilder name(String name) {
         if (name == null) {
             throw new NullPointerException();
@@ -51,15 +50,11 @@ public class DriveBuilder {
         parametros.put(ConfigParametros.NOME, name);
         return this;
     }
-
-    /**
-     * O tipo do remoto. Por um erro, esse metodo existiu e será apagado num
-     * futuro pois não tem logica.
-     *
-     * @param type
-     */
-    private void type(String type) {
-        parametros.put(ConfigParametros.TIPO, type);
+    
+    @Override
+    public DriveBuilder type() {
+        parametros.put(ConfigParametros.TIPO, "drive");
+        return this;
     }
 
     /**
