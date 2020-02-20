@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import rclone.models.RemoteType;
 import rclone.wrapper.RCloneException;
 import rclone.wrapper.RCloneWrapper;

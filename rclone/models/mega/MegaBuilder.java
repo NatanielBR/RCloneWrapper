@@ -4,6 +4,7 @@ import java.util.HashMap;
 import rclone.models.Builder;
 import rclone.models.ConfigParametros;
 import rclone.models.ObrigatorioException;
+import rclone.models.RemoteType;
 import rclone.wrapper.RCloneWrapper;
 
 /**
@@ -11,36 +12,43 @@ import rclone.wrapper.RCloneWrapper;
  *
  * @author neoold
  */
-public class MegaBuilder extends Builder{
+public class MegaBuilder extends Builder {
 
     private HashMap<ConfigParametros, String> parametros;
     private RCloneWrapper wrapper;
 
     public MegaBuilder(RCloneWrapper wrapper) {
-        super();
         parametros = new HashMap<>();
         this.wrapper = wrapper;
     }
-    
+
     @Override
-    public ConfigParametros[] parametrosBuild(){
+    public ConfigParametros[] parametrosBuild() {
         return new ConfigParametros[]{
             ConfigParametros.USER,
             ConfigParametros.PASSWORD
         };
     }
-    
+
     @Override
-    public Mega build() throws ObrigatorioException {
-        type();
-        var mega = new Mega(wrapper, parametros);
+    public ConfigParametros[] parametrosObrigadorios() {
+        return new ConfigParametros[]{ConfigParametros.NOME,
+            ConfigParametros.TIPO,
+            ConfigParametros.USER,
+            ConfigParametros.PASSWORD};
+    }
+
+    @Override
+    public RemoteType build() throws ObrigatorioException {
+        parametros.put(ConfigParametros.TIPO, type());
+        var mega = new RemoteType(wrapper, parametrosObrigadorios(),
+                parametros);
         if (!mega.verificarObrigatorio()) {
             throw new ObrigatorioException();
         }
         return mega;
     }
 
-    
     @Override
     public MegaBuilder name(String name) {
         if (name == null) {
@@ -50,10 +58,9 @@ public class MegaBuilder extends Builder{
         return this;
     }
 
-    
-    public MegaBuilder type() {
-        parametros.put(ConfigParametros.TIPO, "mega");
-        return this;
+    @Override
+    public String type() {
+        return "mega";
     }
 
     /**

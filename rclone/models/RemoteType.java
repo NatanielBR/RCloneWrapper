@@ -8,7 +8,6 @@ import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-
 import rclone.models.remotes.Remote;
 import rclone.wrapper.RCloneWrapper;
 import rclone.wrapper.WrapperTools;
@@ -25,6 +24,16 @@ public class RemoteType extends Remote {
     protected ConfigParametros[] obrigatorios;
     protected HashMap<ConfigParametros, String> parametros;
 
+    private Process processRClone;
+
+    /**
+     * Construtor para criar o RemoteType.
+     *
+     * @param wrapper Wrapper que sera usado para contruir o Remoto.
+     * @param obrigatorios Parametros obrigatorios para ser verificado, pode ser
+     * null entretando o metodo verficarObrigatorio não terá efeito.
+     * @param parametros Parametros que será usado para construir o Remoto.
+     */
     public RemoteType(RCloneWrapper wrapper, ConfigParametros[] obrigatorios,
             HashMap<ConfigParametros, String> parametros) {
         super(wrapper, parametros.get(ConfigParametros.NOME),
@@ -41,16 +50,14 @@ public class RemoteType extends Remote {
      *
      * @param onUpdate Uma ação que será executada sempre que houver atualização
      * no texto que o rclone mandar.
-     * @throws ObrigatorioException Caso a lista de obrigatorios não foi
-     * atentida.
      */
-    public void create(Consumer<String> onUpdate) throws ObrigatorioException {
+    public void create(Consumer<String> onUpdate) {
         var args = mapParaArray(parametros);
         args = WrapperTools.arrayFirtAppend(args, new String[]{"config", "create"});
         try {
-            var proc = wrapper.getRcloneRuntime(args);
-            readInput(proc);
-            while (proc.isAlive()) {
+            processRClone = wrapper.getRcloneRuntime(args);
+            readInput(processRClone);
+            while (processRClone.isAlive()) {
                 StringBuilder bu = new StringBuilder();
                 String c = lines.take();
                 do {
@@ -62,9 +69,16 @@ public class RemoteType extends Remote {
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (InterruptedException ex) {
-            ex.printStackTrace();
         }
 
+    }
+    /**
+     * Metodo para finalizar o processo RClone.
+     * Será chamado o metodo Process.destroy.
+     * @see Process
+     */
+    public void finalizarProcesso() {
+        processRClone.destroy();
     }
 
     /**

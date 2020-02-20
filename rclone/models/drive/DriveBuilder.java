@@ -4,6 +4,7 @@ import java.util.HashMap;
 import rclone.models.Builder;
 import rclone.models.ConfigParametros;
 import rclone.models.ObrigatorioException;
+import rclone.models.RemoteType;
 import rclone.wrapper.RCloneWrapper;
 
 /**
@@ -11,19 +12,18 @@ import rclone.wrapper.RCloneWrapper;
  *
  * @author neoold
  */
-public class DriveBuilder extends Builder{
+public class DriveBuilder extends Builder {
 
     private HashMap<ConfigParametros, String> parametros;
     private RCloneWrapper wrapper;
 
     public DriveBuilder(RCloneWrapper wrapper) {
         parametros = new HashMap<>();
-        type();
         this.wrapper = wrapper;
     }
-    
+
     @Override
-    public ConfigParametros[] parametrosBuild(){
+    public ConfigParametros[] parametrosBuild() {
         return new ConfigParametros[]{
             ConfigParametros.DRIVE_CLIENT_ID,
             ConfigParametros.DRIVE_CLIENT_SECRET,
@@ -31,11 +31,11 @@ public class DriveBuilder extends Builder{
             ConfigParametros.DRIVE_SCOPE
         };
     }
-    
+
     @Override
-    public Drive build() throws ObrigatorioException {
-        type();
-        var drive = new Drive(wrapper, parametros);
+    public RemoteType build() throws ObrigatorioException {
+        parametros.put(ConfigParametros.TIPO, type());
+        var drive = new RemoteType(wrapper, parametrosObrigadorios(), parametros);
         if (!drive.verificarObrigatorio()) {
             throw new ObrigatorioException();
         }
@@ -50,11 +50,10 @@ public class DriveBuilder extends Builder{
         parametros.put(ConfigParametros.NOME, name);
         return this;
     }
-    
+
     @Override
-    public DriveBuilder type() {
-        parametros.put(ConfigParametros.TIPO, "drive");
-        return this;
+    public String type() {
+        return "drive";
     }
 
     /**
@@ -111,6 +110,13 @@ public class DriveBuilder extends Builder{
         }
         parametros.put(ConfigParametros.DRIVE_ROOT_FOLDER, root);
         return this;
+    }
+
+    @Override
+    public ConfigParametros[] parametrosObrigadorios() {
+        return new ConfigParametros[]{
+            ConfigParametros.NOME,
+            ConfigParametros.TIPO};
     }
 
     /**

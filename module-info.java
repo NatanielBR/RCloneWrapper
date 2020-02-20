@@ -1,4 +1,4 @@
-module RcloneWrapper {
+module rwrapper {
     exports rclone.wrapper;
     exports rclone.models.drive;
     exports rclone.models.mega;

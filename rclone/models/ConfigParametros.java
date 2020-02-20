@@ -8,11 +8,11 @@ public enum ConfigParametros {
     /**
      * Nome do remoto. Obrigatorio.
      */
-    NOME(null),
+    NOME("nome"),
     /**
      * Tipo do remoto. Obrigatorio.
      */
-    TIPO(null),
+    TIPO("tipo"),
     /**
      * ClientId, relacionado ao Drive. Opcional.
      */
